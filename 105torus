@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+
+from sys import *
+import math
+
+def equation_4th(x):
+    eqt = (a4 * (x**4) + a3 * (x**3) + a2 * (x**2) + a1 * x  + a0)
+    return (eqt)
+
+def derived_equa(x):
+    fct = (4 * a4 * (x**3) + 3 * a3 * (x**2) + 2 * a2 * x + a1)
+    return (fct)
+
+def secant_algo(precision):
+    a = 0
+    b = 1
+
+    while (abs(a - b) > (10**(-precision))):
+        s = b - ((b - a) / (equation_4th(b) - equation_4th(a))) * equation_4th(b)
+        a = b
+        b = s
+        if (10 **n) * s % 1 == 0:
+            print("x =", s)
+        else:
+            print("x = %.*f" % (n, s))
+
+def newton_algo(precision):
+    s = 0.5
+    analyse, c = 0
+
+    while (abs(c - s) > 10**(-precision)):
+        c = s
+        analyse += 1
+        if (10**n * s % 1) == 0:
+            print("x =", s)
+        else:
+            print("x = %.*f" % (n, s))
+        s = s - (equation_4th(s) / derived_equa(s))
+        if (analyse > 15):
+            stderr.write("Calcul Error\n")
+            exit (84)
+
+def bisect_algo(precision):
+    a  = 0
+    b  = 1
+    a_4th = equation_4th(a)
+    b_4th = equation_4th(b)
+    c  = 0
+    i  = 0
+    s  = 1
+    while abs(c - s) > (10**(-precision)):
+        s = c
+        c = (a + b)/ 2
+        if a_4th * equation_4th(c) < 0:
+            b = c
+        else:
+            a = c
+        if (10**n) * c % 1 == 0:
+            print("x =", c)
+        else:
+            print("x = %.*f" % (n, c))
+
+def h_flag():
+    print("USAGE")
+    print("    ./105torus opt a0 a1 a2 a3 a4 n\n")
+    print("DESCRIPTION")
+    print("    opt       method option:")
+    print("                  1 for the bisection method")
+    print("                  2 for Newton's method")
+    print("                  3 for the secant method")
+    print("    a[0-4]    coefficients of the equation")
+    print("    n         precision (the application of the polynomial to the solution")
+    print("              should be smaller than 10ˆ-n)")
+
+def error_check(argv):
+    if   len(argv) == 1:
+        stderr.write("You need to call arguments. Look the -h for more information.\n")
+        exit (84)
+    elif len(argv) == 2 and argv[1] == "-h":
+        h_flag()
+        exit (0)
+    elif len(argv) != 8:
+        stderr.write("./105torus need 7 arguments. Look the -h for more information\n")
+        exit (84)
+    elif argv[7] < '0':
+        stderr.write("Precision can not be less than 0\n")
+        exit (84)
+    i = 1
+    while i < 8:
+        try: int(argv[i])
+        except:
+            stderr.write("Bad type of argument. Enter integer\n")
+            exit (84)
+        i += i
+    if int(argv[1]) < 1 or int(argv[1]) > 3:
+        stderr.write("Opt can only be equal to 1, 2 or 3, try -h for more information\n")
+        exit (84)
+
+error_check(argv)
+global opt, a0, a1, a2, a3, a4, n
+
+opt = int(argv[1])
+a0  = int(argv[2])
+a1  = int(argv[3])
+a2  = int(argv[4])
+a3  = int(argv[5])
+a4  = int(argv[6])
+n   = int(argv[7])
+
+if opt == 1:
+    bisect_algo(n)
+if opt == 2:
+    newton_algo(n)
+if opt == 3:
+    secant_algo(n)
