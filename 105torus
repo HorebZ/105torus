@@ -26,7 +26,8 @@ def secant_algo(precision):
 
 def newton_algo(precision):
     s = 0.5
-    analyse, c = 0
+    c = 0
+    analyse = 0
 
     while (abs(c - s) > 10**(-precision)):
         c = s
